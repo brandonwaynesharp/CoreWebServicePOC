@@ -3,29 +3,40 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using CoreWebServicePOC.core;
 
 namespace CoreWebServicePOC.Controllers
-{
+{   
+       
+    [FormatFilter]
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        // GET api/values
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        private readonly IValuesBusiness _business;
+
+        public ValuesController(IValuesBusiness business)
         {
-            return new string[] { "value1", "value2" };
+            _business = business;
+        }
+
+        // GET api/values
+        [HttpGet("")]
+        public async Task<OkObjectResult> Get()
+        {
+            return Ok(await _business.Get());           
         }
 
         // GET api/values/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}.{format?}")]
         public ActionResult<string> Get(int id)
         {
-            return "value";
+            return Ok(new string[] { "value1", "value2" });
+
         }
 
         // POST api/values
-        [HttpPost]
+        [HttpPost("")]
         public void Post([FromBody] string value)
         {
         }

@@ -12,6 +12,9 @@ namespace CoreWebServicePOC
             container.Register<IValuesBusiness, ValuesBusiness>(Lifestyle.Scoped);
 
             container.Register<IValuesRepo, ValuesRepo>(Lifestyle.Scoped);
+
+            container.Register<ISqlDataContext, SqlDataContext>(Lifestyle.Scoped);
+
             return container;
         }
 

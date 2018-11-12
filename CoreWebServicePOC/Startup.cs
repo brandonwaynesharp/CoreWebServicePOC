@@ -32,7 +32,6 @@ namespace CoreWebServicePOC
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc(options =>
@@ -67,7 +66,6 @@ namespace CoreWebServicePOC
 
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             InitializeContainer(app);
@@ -80,16 +78,13 @@ namespace CoreWebServicePOC
             app.UseMvc();
         }
         private void InitializeContainer(IApplicationBuilder app)
-        {
-            // Add application presentation components:
+        {            
             container.RegisterMvcControllers(app);
             container.RegisterMvcViewComponents(app);
-
-            // Add application services. For instance:
+                        
             SimpleInjectorWrapper iocWrapper = new SimpleInjectorWrapper();
             container = iocWrapper.AddApplicationDependencies(container);
-
-            // Allow Simple Injector to resolve services from ASP.NET Core.
+                        
             container.AutoCrossWireAspNetComponents(app);
         }
     }

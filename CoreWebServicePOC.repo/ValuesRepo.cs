@@ -1,6 +1,10 @@
 ﻿using CoreWebServicePOC.core;
 using System.Collections.Generic;
+using System.Data;
 using System.Threading.Tasks;
+using System.Data.SqlClient;
+using Dapper;
+using System.Linq;
 
 namespace CoreWebServicePOC.repo
 {
@@ -8,22 +12,20 @@ namespace CoreWebServicePOC.repo
     {
         private readonly ISqlDataContext _context;
 
-        public async Task<IList<Value>> GetAllValues()
-        {           
+        public ValuesRepo(ISqlDataContext context)
+        {
+            _context = context;
+        }
 
+        public async Task<IList<Value>> GetAllValues()
+        {
             List<Value> retList = new List<Value>();
-            var commandString = @"SELECT [id],[value] FROM [ValueDB].[dbo].[Value]";
-            using (var dr = await _context.ExecuteReaderAsync(commandString))
+
+            using (IDbConnection conn = _context.CreateConnection())
             {
-                while (await dr.ReadAsync())
-                {
-                    Value v = new Value();
-                    v.id = int.Parse(dr[0].ToString());
-                    v.value = System.Convert.ToString(dr[1]);
-                    retList.Add(v);
-                }
+                conn.Open();
+                return (await conn.QueryAsync<Value>(@"SELECT [id],[value] FROM [ValueDB].[dbo].[Value]")).ToList();
             }
-            return retList;
         }
     }
 }

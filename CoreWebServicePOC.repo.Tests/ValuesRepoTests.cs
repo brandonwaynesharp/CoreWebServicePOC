@@ -22,6 +22,20 @@ namespace CoreWebServicePOC.repo.Tests
         }
 
         [Fact]
+        public void ListAllAsync_queryReturnsEmptyList_returnsEmptyList()
+        {
+            //Arrange
+            SetReaderValue(new List<Value>());
+
+            //Act
+            var result = _repo.GetAllAsync().Result;
+
+            //Assert
+            Assert.True(result.Count() == 0);
+            VerifyExecuteSqlAsync("ValuesSqlConnection", "SELECT [id],[value] FROM [ValueDB].[dbo].[Value];");
+        }
+
+        [Fact]
         public void ListAllAsync_queryReturnsList_returnsList()
         {
             //Arrange
@@ -44,11 +58,11 @@ namespace CoreWebServicePOC.repo.Tests
 
             //Assert
             Assert.True(result.Count()==2);
-            Assert.Contains(result, m => m.id == 5 &&
-                                          m.value == "444");
-            Assert.Contains(result, m => m.id == 5 &&
-                                          m.value == "444");
-            VerifyExecuteSqlAsync("SqlClient", "", null);
+            Assert.Contains(result, m => m.id == 1 &&
+                                          m.value == "value1");
+            Assert.Contains(result, m => m.id == 2 &&
+                                          m.value == "value2");
+            VerifyExecuteSqlAsync("ValuesSqlConnection", "SELECT [id],[value] FROM [ValueDB].[dbo].[Value];");
         }
     }
 }

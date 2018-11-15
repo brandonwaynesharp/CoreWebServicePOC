@@ -22,7 +22,7 @@ namespace CoreWebServicePOC.repo
         public async Task<IList<Value>> GetAllAsync()
         {
             using (var reader = await _sqlQueryProvider.ExecuteSqlAsync(RepositorySettings.ValuesConnectionName,
-                    "SELECT [id],[value] FROM [ValueDB].[dbo].[Value]; "))
+                    "SELECT [id],[value] FROM [ValueDB].[dbo].[Value];"))
             {
                 var records = reader.Read<Value>();
 

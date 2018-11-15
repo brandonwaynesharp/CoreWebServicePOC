@@ -24,7 +24,7 @@ namespace CoreWebServicePOC.Business.Tests
             };
 
             mockValuesRepo = new Mock<IValuesRepo>(MockBehavior.Strict);
-            mockValuesRepo.Setup(v => v.GetAllValues()).Returns(Task.FromResult(returnValue));
+            mockValuesRepo.Setup(v => v.GetAllAsync()).Returns(Task.FromResult(returnValue));
 
             valuesBusiness = new ValuesBusiness(mockValuesRepo.Object);
 

@@ -13,7 +13,13 @@ namespace CoreWebServicePOC
 
             container.Register<IValuesRepo, ValuesRepo>(Lifestyle.Scoped);
 
-            container.Register<ISqlDataContext, SqlDataContext>(Lifestyle.Scoped);
+            container.Register<IConfigurationProvider, ConfigurationProvider>(Lifestyle.Scoped);
+
+            container.Register<ISqlQueryConnectionProvider, SqlQueryConnectionProvider>(Lifestyle.Scoped);
+
+            container.Register<ISqlQueryProvider, SqlQueryProvider>(Lifestyle.Scoped);
+
+            container.Register<IQueryReader, QueryReader>(Lifestyle.Scoped);
 
             return container;
         }

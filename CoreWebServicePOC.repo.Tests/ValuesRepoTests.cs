@@ -1,28 +1,54 @@
 using System;
+using System.Data;
 using Xunit;
+using Moq;
+using CoreWebServicePOC.repo;
+using CoreWebServicePOC.core;
+using FizzWare.NBuilder;
+using Dapper;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
+
 
 namespace CoreWebServicePOC.repo.Tests
 {
-    public class ValuesRepoTests
+    public class ValuesRepoTests : SqlTestBase
     {
-        [Fact]
-        public void GetAllValuesReturnsAll()
+        private IValuesRepo _repo;
+        public ValuesRepoTests()
         {
-            ////Arrange
-            //IList<Value> returnValue = new List<Value>
-            //{
-            //    new Value { id = 1, value = "value1" },
-            //    new Value { id = 2, value = "value2" },
-            //    new Value { id = 3, value = "value3" },
-            //};
+            _repo = new ValuesRepo(SqlQueryProviderMock.Object);
+        }
 
-            //mockValuesRepo = new Mock<IValuesRepo>(MockBehavior.Strict);
-            //mockValuesRepo.Setup(v => v.GetAllValues()).Returns(Task.FromResult(returnValue));
-
-            //valuesBusiness = new ValuesBusiness(mockValuesRepo.Object);
-            ////Act
+        [Fact]
+        public void ListAllAsync_queryReturnsList_returnsList()
+        {
+            //Arrange
+            SetReaderValue(new List<Value>
+            {
+                new Value
+                {
+                    id =1,
+                    value = "value1"
+                },
+                new Value
+                {
+                    id =2,
+                    value = "value2"
+                }
+            });
+           
+            //Act
+            var result = _repo.GetAllAsync().Result;
 
             //Assert
+            Assert.True(result.Count()==2);
+            Assert.Contains(result, m => m.id == 5 &&
+                                          m.value == "444");
+            Assert.Contains(result, m => m.id == 5 &&
+                                          m.value == "444");
+            VerifyExecuteSqlAsync("SqlClient", "", null);
         }
     }
 }

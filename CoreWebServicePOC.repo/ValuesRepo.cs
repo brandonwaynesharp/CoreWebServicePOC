@@ -5,26 +5,32 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using Dapper;
 using System.Linq;
+using System.Collections.Specialized;
+using System.Configuration;
 
 namespace CoreWebServicePOC.repo
 {
     public class ValuesRepo : IValuesRepo
     {
-        private readonly ISqlDataContext _context;
+        private readonly ISqlQueryProvider _sqlQueryProvider;
 
-        public ValuesRepo(ISqlDataContext context)
+        public ValuesRepo(ISqlQueryProvider sqlQueryProvider)
         {
-            _context = context;
+            _sqlQueryProvider = sqlQueryProvider;
         }
 
-        public async Task<IList<Value>> GetAllValues()
+        public async Task<IList<Value>> GetAllAsync()
         {
-            List<Value> retList = new List<Value>();
-
-            using (IDbConnection conn = _context.CreateConnection())
+            using (var reader = await _sqlQueryProvider.ExecuteSqlAsync(RepositorySettings.ValuesConnectionName,
+                    "SELECT [id],[value] FROM [ValueDB].[dbo].[Value]; "))
             {
-                conn.Open();
-                return (await conn.QueryAsync<Value>(@"SELECT [id],[value] FROM [ValueDB].[dbo].[Value]")).ToList();
+                var records = reader.Read<Value>();
+
+                return records.Select(m => new Value
+                {
+                    id = m.id,
+                    value = m.value
+                }).ToList();
             }
         }
     }

@@ -15,7 +15,7 @@ namespace CoreWebServicePOC.Business
         
         public async Task<IList<Value>> Get()
         {
-            var list = await Task.Run(() => _repo.GetAllValues());
+            var list = await Task.Run(() => _repo.GetAllAsync());
 
             return list;
         }

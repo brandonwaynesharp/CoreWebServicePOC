@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace CoreWebServicePOC
 {
@@ -64,6 +65,23 @@ namespace CoreWebServicePOC
             services.EnableSimpleInjectorCrossWiring(container);
             services.UseSimpleInjectorAspNetRequestScoping(container);
 
+            services.AddMvc();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info
+                {
+                    Version = "v1",
+                    Title = "POC",
+                    Description = "Core Web Service POC",
+                    TermsOfService = "None",
+                    Contact = new Contact() { Name = "Brandon Sharp", Email = "bsharp1976@gmail.com", Url = "localhost" }
+                });
+            });
+
+            services.AddSwaggerGen(c =>
+            {
+                c.IncludeXmlComments(GetXmlCommentsPath());
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -76,6 +94,12 @@ namespace CoreWebServicePOC
             }
 
             app.UseMvc();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
         }
         private void InitializeContainer(IApplicationBuilder app)
         {            
@@ -86,6 +110,11 @@ namespace CoreWebServicePOC
             container = iocWrapper.AddApplicationDependencies(container);
                         
             container.AutoCrossWireAspNetComponents(app);
+        }
+
+        private string GetXmlCommentsPath()
+        {
+            return System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "CoreWebServicePOC.xml");
         }
     }
 }

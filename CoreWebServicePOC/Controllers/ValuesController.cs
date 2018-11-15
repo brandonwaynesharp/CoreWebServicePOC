@@ -20,7 +20,11 @@ namespace CoreWebServicePOC.Controllers
             _business = business;
         }
 
-        // GET api/values
+        // get api/values
+        /// <summary>
+        /// Get the values
+        /// </summary>
+        /// <remarks>This API will get the values.</remarks>
         [HttpGet("")]
         public async Task<OkObjectResult> Get()
         {

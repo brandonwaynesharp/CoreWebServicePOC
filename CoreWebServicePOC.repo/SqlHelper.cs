@@ -2,13 +2,17 @@
 using System.Data.SqlClient;
 using System.Data;
 using System.Threading.Tasks;
+using System.Collections.Specialized;
 
 namespace CoreWebServicePOC.repo
 {
     public class SQLHelper
     {
-        private static string CONNECTION_STRING = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=ValueDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-        public static string ConnectionString { get { return CONNECTION_STRING; } }
+        private static string VALUES_SQL_CONNECTION = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=ValueDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        public static string ValuesSqlConnection
+        {
+            get { return VALUES_SQL_CONNECTION; }
+        }
 
         public static async Task<int> ExecuteNonQueryAsync(SqlConnection conn, string cmdText, SqlParameter[] cmdParms)
         {

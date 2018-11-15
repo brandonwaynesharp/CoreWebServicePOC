@@ -7,6 +7,6 @@ namespace CoreWebServicePOC.core
 {
     public interface IValuesRepo
     {
-        Task<IList<Value>> GetAllValues();
+        Task<IList<Value>> GetAllAsync();
     }
 }

@@ -7,6 +7,7 @@
   <ItemGroup>
     <PackageReference Include="Dapper" Version="1.50.5" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.5.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0-preview3-35497" />
     <PackageReference Include="System.Data.SqlClient" Version="4.6.0-preview3-27014-02" />
   </ItemGroup>
 
